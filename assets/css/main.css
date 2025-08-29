@@ -1,0 +1,103 @@
+body {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  /* background-color: grey; */
+}
+
+main {
+  display: grid;
+  gap: 3rem;
+  max-width: 100%;
+  padding: 2rem;
+  width: 375px;
+  background-color: var(--Rose-50);
+  /* outline: 1px solid red; */
+}
+
+#title {
+  font: var(--text-title);
+  margin-bottom: 1rem;
+  color: var(--Rose-900);
+}
+
+#desserts {
+  display: grid;
+  gap: 1.5rem;
+  grid-auto-columns: auto;
+}
+
+.card__product {
+  position: relative;
+  margin-bottom: 3rem;
+  /* outline: 1px dashed green; */
+}
+
+.card__image {
+  width: 100%;
+  max-width: 335px;
+  border-radius: 10px;
+}
+
+.card__button {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 25%;
+  top: 200px;
+  width: 160px;
+  padding: 1rem;
+  font: var(--text-sm-ft);
+  border-radius: 999px;
+  border: 1px solid var(--Rose-500);
+  cursor: pointer;
+}
+
+.card__button:hover {
+  transform: translateY(-1px);
+}
+
+.card__info {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  margin-bottom: 2.5rem;
+  /* outline: 1px dashed purple; */
+}
+
+.name-dessert {
+  font: var(--text-sm-ft);
+  color: var(--Rose-900);
+}
+
+.description-dessert {
+  font: var(--text-sm);
+  color: var(--Rose-400);
+}
+
+.price-dessert {
+  font: var(--text-sm-ft);
+  color: var(--Red);
+}
+
+#subtitle {
+  padding-left: 2rem;
+  font: var(--text-subtitle);
+  color: var(--Red); 
+}
+
+.cart-empty {
+  display: flex;
+  flex-direction: column;
+  justify-self: center;
+}
+
+.cart-empty span {
+  /* width: 100%; */
+  font: var(--text-sm);
+  color: var(--Rose-500);
+  /* outline: 1px solid red; */
+}
