@@ -27,7 +27,7 @@ html {
 
   --red-hat-font: 'Red Hat Text', sans-serif;
   --text-sm: 500 1.3rem/120% var(--red-hat-font);
-  --text-sm-ft: 600 1.3rem/120% var(--red-hat-font);
+  --text-sm-ft: 700 1.3rem/120% var(--red-hat-font);
   --text-md: 700 1.4rem/120% var(--red-hat-font);
   --text-subtitle: 700 1.6rem/120% var(--red-hat-font);
   --text-title: 700 3rem/120% var(--red-hat-font);
