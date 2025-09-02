@@ -165,10 +165,12 @@
 
     <section id="cart-section">
       <h2 id="cart-title">Your Cart (<!-- Quantity -->)</h2>
+
       <div class="cart__empty">
         <img src="assets/images/illustration-empty-cart.svg" alt="Empty cart illustration" class="cart__empty-image">
         <span class="cart__empty-message">Your added items will appear here</span>
       </div>
+
       <div class="cart__full">
         <div class="cart__item">
           <div class="cart__product">
@@ -183,16 +185,95 @@
             <img src="assets/images/icon-remove-item.svg" alt="Remove item icon" class="cart__remove-item-icon">
           </button>
         </div>
+        <div class="cart__item">
+          <div class="cart__product">
+            <span class="cart__product-name">Vanilla Bean Crème Brûlée</span>
+            <div class="cart__product-details">
+              <span class="cart__product-quantity">4x</span>
+              <span class="cart__product-price">@ $7.00</span>
+              <span class="cart__product-total-price">$28.00</span>
+            </div>
+          </div>
+          <button class="cart__remove-item">
+            <img src="assets/images/icon-remove-item.svg" alt="Remove item icon" class="cart__remove-item-icon">
+          </button>
+        </div>
+        <div class="cart__item">
+          <div class="cart__product">
+            <span class="cart__product-name">Vanilla Panna Cotta</span>
+            <div class="cart__product-details">
+              <span class="cart__product-quantity">2x</span>
+              <span class="cart__product-price">@ $6.50</span>
+              <span class="cart__product-total-price">$13.00</span>
+            </div>
+          </div>
+          <button class="cart__remove-item">
+            <img src="assets/images/icon-remove-item.svg" alt="Remove item icon" class="cart__remove-item-icon">
+          </button>
+        </div>
         <div class="cart__totals">
           <span class="cart__totals-label">Order Total</span>
           <span class="cart__totals-price">$46.50</span>
         </div>
       </div>
+
       <div class="cart__carbon-neutral">
         <img src="assets/images/icon-carbon-neutral.svg" alt="Carbon-neutral delivery-icon" class="cart__carbon-icon">
-        This is a<span class="cart__carbon-neutral-text">carbon-neutral</span>delivery
+        <p>
+          This is a 
+          <span class="cart__carbon-neutral-text">carbon-neutral</span>
+           delivery
+        </p>
       </div>
       <button class="confirm-button">Confirm Order</button>
+    </section>
+
+    <section id="order-confirmation">
+      <img src="assets/images/icon-order-confirmed.svg" alt="Icon order confirmed" class="icon_confirmed">
+      <h2 id="title">Order confirmed</h2>
+      <p>We hope you enjoy your food!</p>
+
+      <div class="cart__full">
+        <div class="cart__item">
+          <div class="cart__product">
+            <img src="assets/images/image-tiramisu-thumbnail.jpg" alt="image tiramisu thumbnail" class="cart__image-thumbnail">
+            <div class="cart__product-details">
+              <span class="cart__product-name">Classic Tiramisu</span>
+              <span class="cart__product-quantity">1x</span>
+              <span class="cart__product-price">@ $5.50</span>
+            </div>
+            <span class="cart__product-total-price">$5.50</span>
+          </div>
+        </div>
+        <div class="cart__item">
+          <div class="cart__product">
+            <img src="assets/images/image-creme-brulee-thumbnail.jpg" alt="image creme brulee thumbnail" class="cart__image-thumbnail">
+            <div class="cart__product-details">
+              <span class="cart__product-name">Vanilla Bean Crème Brûlée</span>
+              <span class="cart__product-quantity">4x</span>
+              <span class="cart__product-price">@ $7.00</span>
+            </div>
+            <span class="cart__product-total-price">$28.00</span>
+          </div>
+        </div>
+        <div class="cart__item">
+          <div class="cart__product">
+            <img src="assets/images/image-panna-cotta-thumbnail.jpg" alt="image panna cotta thumbnail" class="cart__image-thumbnail">
+            <div class="cart__product-details">
+              <span class="cart__product-name">Vanilla Panna Cotta</span>
+              <span class="cart__product-quantity">2x</span>
+              <span class="cart__product-price">@ $6.50</span>
+            </div>
+            <span class="cart__product-total-price">$13.00</span>
+          </div>
+        </div>
+        <div class="cart__totals">
+          <span class="cart__totals-label">Order Total</span>
+          <span class="cart__totals-price">$46.50</span>
+        </div>
+      </div>
+
+      <button class="confirm-button" onclick="startNewOrder()">Start New Order</button>
     </section>
   </main>
 
