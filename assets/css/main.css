@@ -330,19 +330,3 @@ main {
 #order-confirmation .cart__totals-price {
   font: var(--text-title);
 }
-
-#desserts, #cart-section, #order-confirmation {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(10px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  position: absolute;
-  /* width: 100%; */
-}
-
-#desserts.active, #cart-section.active, #order-confirmation.active {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-  position: relative;
-}
