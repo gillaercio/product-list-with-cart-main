@@ -3,7 +3,7 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  /* background-color: grey; */
+  background-color: grey;
 }
 
 main {
@@ -67,7 +67,9 @@ main {
 .card__button:focus-visible {
   justify-content: space-between;
   border: none;
-  outline: none;
+  /* outline: none; */
+  outline: 1px solid var(--Red);
+  outline-offset: 2px;
   color: var(--Rose-50);
   background-color: var(--Red);
 }
@@ -104,6 +106,13 @@ main {
   color: var(--Red); 
 }
 
+#cart-section {
+  padding-top: 2rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2);
+}
+
 .cart__empty {
   /* display: flex; */
   display: none;
@@ -119,6 +128,7 @@ main {
 }
 
 .cart__full {
+  /* display: none; */
   display: flex;
   gap: 1rem;
   flex-direction: column;
@@ -131,6 +141,15 @@ main {
   justify-content: space-between;
   padding: 1rem;
   /* outline: 1px solid red; */
+}
+
+hr {
+  width: 95%;
+  position: relative;
+  left: 10px;
+  width: 95%;
+  height: 1px;
+  border-top: 1px solid var(--Rose-100);
 }
 
 .cart__product {
@@ -197,7 +216,7 @@ main {
 }
 
 .cart__totals-label {
-  font: var(--text-sm-ft);
+  font: var(--text-sm);
   color: var(--Rose-500);
 }
 
@@ -211,9 +230,12 @@ main {
   gap: 1rem;
   justify-content: center;
   align-items: center;
-  margin-bottom: 4rem;
+  margin: 0 2rem;
+  padding: 1.5rem;
   font: var(--text-sm);
   color: var(--Rose-500);
+  background-color: var(--Rose-50);
+  border-radius: 8px;
   /* outline: 1px solid green; */
 }
 
@@ -225,7 +247,7 @@ main {
   display: flex;
   justify-content: center;
   width: 90%;
-  padding: 1.5rem;
+  padding: 2rem;
   /* margin-top: 2rem; */
   margin: 2rem auto;
   border: none;
@@ -240,13 +262,21 @@ main {
   transform: translateY(-1px);
 }
 
+.confirm-button:focus-visible {
+  border: none;
+  outline: 1px solid var(--Red);
+  outline-offset: 2px;
+}
+
 #order-confirmation {
   display: none;
   flex-direction: column;
   justify-content: center;
-  /* padding: 1.5rem; */
+  width: 100%;
+  max-width: 375px;
+  /* padding-left: 1.5rem; */
   background-color: white;
-  box-shadow: 2px -2px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
   /* outline: 1px solid blue; */
 }
@@ -258,7 +288,7 @@ main {
 }
 
 #order-confirmation p {
-  padding-left: 0.2rem;
+  /* padding-left: 0.2rem; */
   font: var(--text-sm);
   color: var(--Rose-300);
 }
@@ -267,6 +297,12 @@ main {
   width: 40px;
   height: 40px;
   margin-top: 1rem;
+}
+
+#order-confirmation .cart__full {
+  margin-block: 1rem;
+  background-color: var(--Rose-50);
+  border-radius: 8px;
 }
 
 #order-confirmation .cart__product {
@@ -329,4 +365,9 @@ main {
 
 #order-confirmation .cart__totals-price {
   font: var(--text-title);
+}
+
+#order-confirmation .confirm-button {
+  width: 100%;
+  /* margin: 0; */
 }
