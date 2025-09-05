@@ -16,7 +16,8 @@ main {
   /* outline: 1px solid red; */
 }
 
-#title {
+#title,
+.cart-quantity {
   margin-bottom: 1rem;
   font: var(--text-title);
   color: var(--Rose-900);
@@ -28,7 +29,8 @@ main {
   grid-auto-columns: auto;
 }
 
-.card__product {
+.card__product,
+.quantity__control {
   position: relative;
   margin-bottom: 3rem;
   /* outline: 1px dashed green; */
@@ -38,13 +40,15 @@ main {
   width: 100%;
   max-width: 335px;
   border-radius: 10px;
+  outline: 1px dashed blue;
 }
 
 .card__image:focus-within {
   border: 1px solid var(--Red);
 }
 
-.card__button {
+.card__button,
+.quantity__button {
   display: flex;
   gap: 1rem;
   align-items: center;
@@ -72,6 +76,10 @@ main {
   outline-offset: 2px;
   color: var(--Rose-50);
   background-color: var(--Red);
+}
+
+.quantity-display {
+  font: var(--text-sm-ft);
 }
 
 .card__info {
@@ -114,8 +122,8 @@ main {
 }
 
 .cart__empty {
-  /* display: flex; */
-  display: none;
+  display: flex;
+  /* display: none; */
   flex-direction: column;
   justify-self: center;
 }
@@ -128,8 +136,8 @@ main {
 }
 
 .cart__full {
-  /* display: none; */
-  display: flex;
+  display: none;
+  /* display: flex; */
   gap: 1rem;
   flex-direction: column;
   padding: 1rem;
