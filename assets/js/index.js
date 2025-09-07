@@ -1,11 +1,10 @@
 const dessertSection = document.getElementById("desserts");
 const cartSection = document.getElementById("cart-section");
-// const cardImage = document.querySelector(".card__image");
-// const cardButton = document.querySelector(".card__button");
-// const cardButtonImage = document.querySelector(".card__button img");
 const cartQuantity = document.querySelector(".cart-quantity");
-const confirmButton = document.querySelector(".confirm-button");
 const orderConfirmation = document.getElementById("order-confirmation");
+
+let cart = {};
+let dessertsData = [];
 
 document.addEventListener("DOMContentLoaded", () => {
   fetch("./data.json")
@@ -14,10 +13,11 @@ document.addEventListener("DOMContentLoaded", () => {
       data.forEach((dessert, index) => {
         dessert.id = index + 1;
       });
-      renderDesserts(data);
+      dessertsData = data;
+      renderDesserts(dessertsData);
     })
     .catch(error => {
-      console.error("Erro ao carregar os dados:", error);
+      console.error("Error loading data:", error);
     });
 });
 
@@ -56,74 +56,83 @@ function activateAddToCartButtons(desserts) {
       const card = this.closest(".card__product");
       const id = parseInt(card.dataset.id);
       const dessert = desserts.find(d => d.id === id);
-      let quantity = 1;
 
-      card.innerHTML = `
-        <img class="card__image" src="${dessert.image.mobile}" alt="${dessert.name}">
-        <div class="quality__control">
-          <button class="quantity__button decrement">
-            <img src="assets/images/icon-decrement-quantity.svg" alt="Minus icon">
-          </button>
-          <span class="quantity-display">${quantity}</span>
-          <button class="quantity__button increment">
-            <img src="assets/images/icon-increment-quantity.svg" alt="Plus icon">
-          </button>
-        </div>
+      this.classList.add("selected");
+      this.innerHTML = `
+        <button class="quantity__button decrement">
+          <img src="assets/images/icon-decrement-quantity.svg" alt="Minus icon">
+        </button>
+        <span class="quantity-display">1</span>
+        <button class="quantity__button increment">
+          <img src="assets/images/icon-increment-quantity.svg" alt="Plus icon">
+        </button>
       `;
+      // renderQuantityControls(card, dessert, desserts, 1);
+      updateCart(dessert, 1);
 
-      const decrementButton = card.querySelector(".decrement");
-      const incrementButton = card.querySelector(".increment");
-      const quantityDisplay = card.querySelector(".quantity-display");
-
-      incrementButton.addEventListener("click", () => {
-        quantity++;
-        quantityDisplay.textContent = quantity;
-        updateCart(dessert, quantity);
-      });
-
-      decrementButton.addEventListener("click", () => {
-        if (quantity > 1) {
-          quantity--;
-          quantityDisplay.textContent = quantity;
-          updateCart(dessert, quantity);
-        } else {
-          card.innerHTML = `
-            <img class="card__image" src="${dessert.image.mobile}" alt="${dessert.name}">
-            <button class="card__button" aria-label="Add ${dessert.name} to cart">
-              <img src="assets/images/icon-add-to-cart.svg" alt="Add to cart icon">
-              Add to Cart
-            </button>
-          `;
-
-          const newButton = card.querySelector(".card__button");
-          newButton.addEventListener("click", () => {
-            let quantity = 1;
-
-            card.innerHTML = `
-              <img class="card__image" src="${dessert.image.mobile}" alt="${dessert.name}">
-              <div class="quality__control">
-                <button class="quantity__button decrement">
-                  <img src="assets/images/icon-decrement-quantity.svg" alt="Minus icon">
-                </button>
-                <span class="quantity-display">${quantity}</span>
-                <button class="quantity__button increment">
-                  <img src="assets/images/icon-increment-quantity.svg" alt="Plus icon">
-                </button>
-              </div>
-            `;
-          });
-
-          // activateAddToCartButtons(desserts);
-          removeFromCart(dessert.id);
-        }
-      });
-
-      updateCart(dessert, quantity);
+      const incrementButton = this.querySelector(".increment");
+      const decrementButton = this.querySelector(".decrement");
+      const quantityDisplay = this.querySelector(".quantity-display");
+      setupQuantityControls(incrementButton, decrementButton, quantityDisplay, dessert);
     });
-  })
+  });
 }
 
-let cart = {};
+function setupQuantityControls(incrementButton, decrementButton, quantityDisplay, dessert) {
+  incrementButton.addEventListener("click", () => {
+    cart[dessert.id].quantity++;
+    cart[dessert.id].total = cart[dessert.id].quantity * dessert.price;
+    quantityDisplay.textContent = cart[dessert.id].quantity;
+    // updateCart(dessert, quantity);
+    renderCart();
+  });
+
+  decrementButton.addEventListener("click", () => {
+    if (cart[dessert.id].quantity > 1) {
+      cart[dessert.id].quantity--;
+      cart[dessert.id].total = cart[dessert.id].quantity * dessert.price;
+      quantityDisplay.textContent = cart[dessert.id].quantity;
+      renderCart();
+      // updateCart(dessert, quantity);
+    } else {
+      removeFromCart(dessert.id);
+      resetCardButton(dessert.id);
+    }
+  });
+}
+
+function resetCardButton(dessertId) {
+  const card = document.querySelector(`.card__product[data-id="${dessertId}"]`);
+  const button = card.querySelector(".card__button");
+
+  button.classList.remove("selected");
+  button.innerHTML = `
+    <img src="assets/images/icon-add-to-cart.svg" alt="Add to cart icon">
+    Add to Cart
+  `;
+
+  const dessert = dessertsData.find(d => d.id === dessertId);
+
+  button.addEventListener("click", function () {
+    this.classList.add("selected");
+    this.innerHTML = `
+      <button class="quantity__button decrement">
+        <img src="assets/images/icon-decrement-quantity.svg" alt="Minus icon">
+      </button>
+      <span class="quantity-display">1</span>
+      <button class="quantity__button increment">
+        <img src="assets/images/icon-increment-quantity.svg" alt="Plus icon">
+      </button>
+    `;
+    updateCart(dessert, 1);
+
+    const incrementButton = this.querySelector(".increment");
+    const decrementButton = this.querySelector(".decrement");
+    const quantityDisplay = this.querySelector(".quantity-display");
+    
+    setupQuantityControls(incrementButton, decrementButton, quantityDisplay, dessert);
+  }, { once: true });
+}
 
 function updateCart(dessert, quantity) {
   cart[dessert.id] = {
@@ -137,6 +146,8 @@ function updateCart(dessert, quantity) {
 function removeFromCart(id) {
   delete cart[id];
   renderCart();
+  // renderDesserts(dessertsData);
+  resetCardButton(id);
 }
 
 function renderCart() {
@@ -185,12 +196,6 @@ function renderCart() {
   `;
 }
 
-confirmButton.addEventListener("click", () => {
-  dessertSection.style.display = "none";
-  cartSection.style.display = "none";
-  orderConfirmation.style.display = "flex";
-});
-
 function confirmOrder() {
   dessertSection.style.display = "none";
   cartSection.style.display = "none";
@@ -201,4 +206,12 @@ function startNewOrder() {
   orderConfirmation.style.display = "none";
   dessertSection.style.display = "";
   cartSection.style.display = "";
+  cart = {};
+  renderCart();
 }
+
+// confirmButton.addEventListener("click", () => {
+//   dessertSection.style.display = "none";
+//   cartSection.style.display = "none";
+//   orderConfirmation.style.display = "flex";
+// });
