@@ -22,7 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function renderDesserts(desserts) {
-  const dessertsContainer = document.getElementById("desserts");
+  // const dessertsContainer = document.getElementById("desserts");
+  const dessertsContainer = document.getElementById("desserts-list");
   dessertsContainer.innerHTML = "";
 
   desserts.forEach(dessert => {
@@ -50,12 +51,16 @@ function renderDesserts(desserts) {
 
 function activateAddToCartButtons(desserts) {
   const buttons = document.querySelectorAll(".card__button");
-
+  
   buttons.forEach(button => {
     button.addEventListener("click", function () {
+      if (this.classList.contains("selected")) return;
+      
       const card = this.closest(".card__product");
       const id = parseInt(card.dataset.id);
       const dessert = desserts.find(d => d.id === id);
+
+      card.classList.add("in-cart");
 
       this.classList.add("selected");
       this.innerHTML = `
@@ -67,33 +72,33 @@ function activateAddToCartButtons(desserts) {
           <img src="assets/images/icon-increment-quantity.svg" alt="Plus icon">
         </button>
       `;
-      // renderQuantityControls(card, dessert, desserts, 1);
       updateCart(dessert, 1);
 
       const incrementButton = this.querySelector(".increment");
       const decrementButton = this.querySelector(".decrement");
       const quantityDisplay = this.querySelector(".quantity-display");
+
       setupQuantityControls(incrementButton, decrementButton, quantityDisplay, dessert);
     });
   });
 }
 
 function setupQuantityControls(incrementButton, decrementButton, quantityDisplay, dessert) {
-  incrementButton.addEventListener("click", () => {
+  incrementButton.addEventListener("click", (e) => {
+    e.stopPropagation();
     cart[dessert.id].quantity++;
     cart[dessert.id].total = cart[dessert.id].quantity * dessert.price;
     quantityDisplay.textContent = cart[dessert.id].quantity;
-    // updateCart(dessert, quantity);
     renderCart();
   });
 
-  decrementButton.addEventListener("click", () => {
+  decrementButton.addEventListener("click", (e) => {
+    e.stopPropagation();
     if (cart[dessert.id].quantity > 1) {
       cart[dessert.id].quantity--;
       cart[dessert.id].total = cart[dessert.id].quantity * dessert.price;
       quantityDisplay.textContent = cart[dessert.id].quantity;
       renderCart();
-      // updateCart(dessert, quantity);
     } else {
       removeFromCart(dessert.id);
       resetCardButton(dessert.id);
@@ -104,54 +109,36 @@ function setupQuantityControls(incrementButton, decrementButton, quantityDisplay
 function resetCardButton(dessertId) {
   const card = document.querySelector(`.card__product[data-id="${dessertId}"]`);
   const button = card.querySelector(".card__button");
+  card.classList.remove("in-cart");
 
   button.classList.remove("selected");
   button.innerHTML = `
     <img src="assets/images/icon-add-to-cart.svg" alt="Add to cart icon">
     Add to Cart
   `;
-
-  const dessert = dessertsData.find(d => d.id === dessertId);
-
-  button.addEventListener("click", function () {
-    this.classList.add("selected");
-    this.innerHTML = `
-      <button class="quantity__button decrement">
-        <img src="assets/images/icon-decrement-quantity.svg" alt="Minus icon">
-      </button>
-      <span class="quantity-display">1</span>
-      <button class="quantity__button increment">
-        <img src="assets/images/icon-increment-quantity.svg" alt="Plus icon">
-      </button>
-    `;
-    updateCart(dessert, 1);
-
-    const incrementButton = this.querySelector(".increment");
-    const decrementButton = this.querySelector(".decrement");
-    const quantityDisplay = this.querySelector(".quantity-display");
-    
-    setupQuantityControls(incrementButton, decrementButton, quantityDisplay, dessert);
-  }, { once: true });
 }
 
 function updateCart(dessert, quantity) {
-  cart[dessert.id] = {
-    ...dessert,
-    quantity,
-    total: quantity * dessert.price
-  };
+  if (!cart[dessert.id]) {
+    cart[dessert.id] = {
+      ...dessert,
+      quantity: 0,
+      total: 0
+    };
+  }
+  cart[dessert.id].quantity += quantity;
+  cart[dessert.id].total = cart[dessert.id].quantity * dessert.price;
   renderCart();
 }
 
 function removeFromCart(id) {
   delete cart[id];
   renderCart();
-  // renderDesserts(dessertsData);
   resetCardButton(id);
 }
 
 function renderCart() {
-  const cartContainer = document.querySelector(".cart__full");
+  const cartContainer = cartSection.querySelector(".cart__full");
   const emptyCart = document.querySelector(".cart__empty");
   const quantitySpan = document.querySelector(".cart-quantity");
 
@@ -200,18 +187,62 @@ function confirmOrder() {
   dessertSection.style.display = "none";
   cartSection.style.display = "none";
   orderConfirmation.style.display = "flex";
+
+  renderConfirmation();
+}
+
+function renderConfirmation() {
+  const confirmationContainer = orderConfirmation.querySelector(".cart__full");
+  const cartItems = Object.values(cart);
+
+  if (cartItems.length === 0) {
+    confirmationContainer.innerHTML = `<p>Your cart is empty.</p>`;
+    return;
+  }
+
+  const itemsHTML = cartItems.map(item => `
+    <div class="cart__item">
+      <div class="cart__product">
+        <img src="${item.image.thumbnail}" alt="${item.name}" class="cart__image-thumbnail">
+        <div class="cart__product-details">
+          <span class="cart__product-name">${item.name}</span>
+          <div class="cart__product-info">
+            <span class="cart__product-quantity">${item.quantity}x</span>
+            <span class="cart__product-price">@ $${item.price.toFixed(2)}</span>
+          </div>
+        </div>
+        <span class="cart__product-total-price">$${item.total.toFixed(2)}</span>
+      </div>
+    </div>
+    <hr>
+  `).join("");
+
+  const total = cartItems.reduce((acc, item) => acc + item.total, 0);
+
+  confirmationContainer.innerHTML = `
+    ${itemsHTML}
+    <div class="cart__totals">
+      <span class="cart__totals-label">Order Total</span>
+      <span class="cart__totals-price">$${total.toFixed(2)}</span>
+    </div>
+  `;
+}
+
+function showOrderConfirmation() {
+  const orderConfirmation = document.getElementById("order-confirmation");
+  orderConfirmation.style.display = "flex";
 }
 
 function startNewOrder() {
+  const orderConfirmation = document.getElementById("order-confirmation");
   orderConfirmation.style.display = "none";
   dessertSection.style.display = "";
   cartSection.style.display = "";
   cart = {};
   renderCart();
-}
 
-// confirmButton.addEventListener("click", () => {
-//   dessertSection.style.display = "none";
-//   cartSection.style.display = "none";
-//   orderConfirmation.style.display = "flex";
-// });
+  document.querySelectorAll(".card__product").forEach(card => {
+    const id = parseInt(card.dataset.id);
+    resetCardButton(id);
+  });
+}
