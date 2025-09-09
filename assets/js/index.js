@@ -22,7 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function renderDesserts(desserts) {
-  // const dessertsContainer = document.getElementById("desserts");
   const dessertsContainer = document.getElementById("desserts-list");
   dessertsContainer.innerHTML = "";
 
@@ -184,8 +183,6 @@ function renderCart() {
 }
 
 function confirmOrder() {
-  dessertSection.style.display = "none";
-  cartSection.style.display = "none";
   orderConfirmation.style.display = "flex";
 
   renderConfirmation();
