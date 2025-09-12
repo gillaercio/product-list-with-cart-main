@@ -411,3 +411,52 @@ hr,
   flex-shrink: 0;
   width: 100%;
 }
+
+@media screen and (min-width: 769px) {
+  body {
+    background-color: olive;
+  }
+
+  main {
+    max-width: 769px;
+  }
+
+  #desserts-list {
+    display: grid;
+    grid: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .card__dessert {
+    padding: 1rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  main {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 1024px;
+  }
+
+  #desserts-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  main {
+    max-width: 1440px;
+    padding: 3rem;
+  }
+
+  #desserts-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  #cart-section .cart__full {
+    display: flex;
+    flex: 1;
+    overflow-y: auto;
+    height: 100vh;
+  }
+}
