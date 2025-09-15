@@ -15,6 +15,9 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       dessertsData = data;
       renderDesserts(dessertsData);
+
+      window.addEventListener("resize", () => renderDesserts(dessertsData));
+
     })
     .catch(error => {
       console.error("Error loading data:", error);
@@ -23,14 +26,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function renderDesserts(desserts) {
   const dessertsContainer = document.getElementById("desserts-list");
+  const width = window.innerWidth;
   dessertsContainer.innerHTML = "";
 
   desserts.forEach(dessert => {
+    let imageSrc;
+
+    if (width <= 768) {
+      imageSrc = dessert.image.mobile;
+    } else if (width <= 1024) {
+      imageSrc = dessert.image.tablet;
+    } else {
+      imageSrc = dessert.image.desktop;
+    }
+
     const card = document.createElement("div");
     card.classList.add("card__dessert");
     card.innerHTML = `
       <div class="card__product" data-id="${dessert.id}">
-        <img class="card__image" src="${dessert.image.mobile}" alt="${dessert.name}">
+        <img class="card__image" src="${imageSrc}" alt="${dessert.name}">
         <button class="card__button" aria-label="Add ${dessert.name} to cart">
           <img src="assets/images/icon-add-to-cart.svg" alt="Add to cart icon">
           Add to Cart
