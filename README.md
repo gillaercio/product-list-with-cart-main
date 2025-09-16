@@ -54,7 +54,7 @@ These are my screenshots showing how the project turned out.
 #### Selected
 ![design](./assets/images/screenshot-desktop-design-selected-b.png)
 #### Order Confirmed
-![design](./assets/images/screenshot-desktop-design-order-confirmed-a.png)
+![design](./assets/images/screenshot-desktop-design-order-confirmed-b.png)
 
 - Active state:
 
@@ -62,7 +62,7 @@ These are my screenshots showing how the project turned out.
 
 ### Links
 
-- Solution URL: [My Solution](https://github.com/gillaercio/mortgage-repayment-calculator-main)
+- Solution URL: [My Solution](https://github.com/gillaercio/product-list-with-cart-main)
 
 ## My process
 
@@ -76,16 +76,18 @@ These are my screenshots showing how the project turned out.
 
 ### What I learned
 
-I took advantage of this project to practice using **Pseudo-class**, **Pseudo-elements** and **Reset CSS** with **CSS** and **Calculations** and **Events** with **JavaScript**:
+I took advantage of this project to practice using **BEM** with **HTML**, **Reset CSS** with **CSS**, **Events** and **JSON** with **JavaScript**:
 
-Pseudo-element
+BEM
 
-```css
-.form__type > div:has(input[type="radio"]:checked) {
-  border-color: var(--Lime);
-  background-color: var(--Lime-alfa);
-}
+```html
+<div class="cart__empty">
+  <img src="assets/images/illustration-empty-cart.svg" alt="Empty cart illustration" class="cart__empty-image">
+  <span class="cart__empty-message">Your added items will appear here</span>
+</div>
 ```
+
+RESET CSS
 
 ```css
 *,
@@ -97,35 +99,25 @@ Pseudo-element
 }
 ```
 
-Calculations
+JSON
 
 ```js
-if (repaymentEl.checked) {
-  const monthlyRate = interestRate / 12;
-  const numberOfPayments = mortgageTerm * 12;
+document.addEventListener("DOMContentLoaded", () => {
+  fetch("./data.json")
+    .then(response => response.json())
+    .then(data => {
+      data.forEach((dessert, index) => {
+        dessert.id = index + 1;
+      });
+      dessertsData = data;
+      renderDesserts(dessertsData);
 
-  monthlyPayment = (mortgageAmount * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -numberOfPayments));
-  totalPayment = monthlyPayment * numberOfPayments;
-} else if (interestOnlyEl.checked) {
-  monthlyPayment = (mortgageAmount * interestRate) / 12;
-  totalPayment = monthlyPayment * mortgageTerm * 12;
-}
-```
+      window.addEventListener("resize", () => renderDesserts(dessertsData));
 
-Events
-
-```js
-[mortgageAmountEl, mortgageTermEl, interestRateEl].forEach(input => {
-  input.addEventListener("input", () => {
-    clearFieldError(input);
-  });
-});
-
-[repaymentEl, interestOnlyEl].forEach(radio => {
-  radio.addEventListener("change", () => {
-    typeErrorMsg.textContent = "";
-    typeErrorMsg.classList.remove("visible");
-  });
+    })
+    .catch(error => {
+      console.error("Error loading data:", error);
+    });
 });
 ```
 

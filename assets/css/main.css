@@ -88,6 +88,7 @@ main,
 
 .card__button:hover {
   transform: translate(-50%, -1px);
+  border: 1px solid var(--Rose-900);
 }
 
 .card__button:focus-visible {
@@ -99,6 +100,10 @@ main,
   justify-content: space-between;
   gap: 0.5rem;
   background-color: var(--Red);
+}
+
+.card__button.selected:hover {
+  background-color: var(--Red-hover);
 }
 
 .card__button.selected,
@@ -249,6 +254,7 @@ hr {
 
 .cart__remove-item:hover {
   transform: translateY(-1px);
+  border: 1px solid var(--Rose-900);
 }
 
 .cart__remove-item-icon {
@@ -288,6 +294,7 @@ hr {
   border-radius: 999px;
   cursor: pointer;
 }
+
 
 .confirm-button:hover{
   transform: translateY(-1px);
